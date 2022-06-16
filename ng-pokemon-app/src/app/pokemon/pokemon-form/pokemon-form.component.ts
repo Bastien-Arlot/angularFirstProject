@@ -1,47 +1,58 @@
-
 import {Component, Input, OnInit} from '@angular/core';
 import {Pokemon} from "../pokemon";
 import {PokemonService} from "../pokemon.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-pokemon-form',
-  templateUrl: './pokemon-form.component.html',
-  styles: [
-  ]
+    selector: 'app-pokemon-form',
+    templateUrl: './pokemon-form.component.html',
+    styleUrls: ['./pokemon-form.component.css']
 })
 export class PokemonFormComponent implements OnInit {
 
-  @Input() pokemon: Pokemon;
-  pokemonList: Pokemon[];
-  types: string[];
+    @Input() pokemon: Pokemon;
+    pokemonList: Pokemon[];
+    types: string[];
 
-  constructor(private pokemonService: PokemonService, router: Router) {
-  }
+    constructor(private pokemonService: PokemonService, private router: Router) {
+    }
 
-  ngOnInit(): void {
-    this.types = this.pokemonService.getPokemonTypeList();
-  }
+    ngOnInit(): void {
+        this.types = this.pokemonService.getPokemonTypeList();
+    }
 
-  hasType(type: string): boolean {
-    return this.pokemon.types.includes(type);
-  }
+    hasType(type: string): boolean {
+        return this.pokemon.types.includes(type);
+    }
 
-  selectType($event: Event, type: string) {
-    const isChecked: boolean = ($event.target as HTMLInputElement).checked;
+    selectType($event: Event, type: string) {
+        const isChecked: boolean = ($event.target as HTMLInputElement).checked;
 
-    if(isChecked){
-      this.pokemon.types.push(type);
-    }else{
-      const index = this.pokemon.types.indexOf(type);
-      this.pokemon.types.splice(index, 1);
-}
+        if (isChecked) {
+            this.pokemon.types.push(type);
+        } else {
+            const index = this.pokemon.types.indexOf(type);
+            this.pokemon.types.splice(index, 1);
+        }
 
 
-  }
-  onsubmit() {
-    console.log('submit formn');
-    this.router.navigate(['/pokemon' , this.pokemon.id]);
-}
+    }
+
+    onSubmit() {
+        console.log('submit formn');
+        this.router.navigate(['/pokemon', this.pokemon.id]);
+    }
+
+    isTypesValid(type: string): boolean {
+        if (this.pokemon.types.length === 1 && this.hasType(type)) {
+            return false;
+        }
+
+        if (this.pokemon.types.length > 2 && this.hasType(type)) {
+            return false;
+        }
+
+        return true
+    }
 
 }
