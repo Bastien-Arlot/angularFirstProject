@@ -20,7 +20,7 @@ export class ListPokemonComponent implements OnInit{
         // const pokemonService = new PokemonService() A ABSOLUMENT PAS FAIRE LORS DE L"UTILISATION DE SERVICE
     }
     ngOnInit(){
-        this.pokemonList = this.pokemonService.getPokemonList();
+        this.pokemonService.getPokemonList().subscribe(pokemonList => this.pokemonList = pokemonList);
     }
 
     goToPokemon(pokemon: Pokemon) {
